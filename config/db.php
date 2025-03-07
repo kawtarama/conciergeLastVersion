@@ -196,6 +196,8 @@ try {
     }
    
     // --------------------------------------------
+
+    
     // Check if the 'reservations' table exists
     $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'Apreservations'")->fetchColumn();
 
@@ -216,7 +218,103 @@ try {
         echo "Table 'Apreservations' created successfully.<br>";
     }
     ensureColumnExists($conn, $db_name, 'Apreservations', 'name', 'VARCHAR(100)');
+    // --------------------------------------------
+    // Ensure 'villas ' table exists
+    $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'villas'")->fetchColumn();
+    if (!$table_exists) {
+        $conn->exec("CREATE TABLE villas (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            villa_name VARCHAR(255) NOT NULL,
+            location VARCHAR(255) NOT NULL,
+            price DECIMAL(10,2) NOT NULL,
+            description TEXT NOT NULL,
+            cover_image VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )");
+        echo "Table 'villas' created successfully.<br>";
+    }
 
+    // Ensure 'apartment_images' table exists
+    $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'villa_images'")->fetchColumn();
+    if (!$table_exists) {
+        $conn->exec("CREATE TABLE villa_images (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            villa_id INT NOT NULL,
+            image_path VARCHAR(255) NOT NULL,
+            FOREIGN KEY (villa_id) REFERENCES villas(id) ON DELETE CASCADE
+        )");
+        echo "Table 'apartment_images' created successfully.<br>";
+    }
+    // --------------------------------------------
+    // Check if the 'villareservations' table exists
+    $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'villareservations'")->fetchColumn();
+
+    if (!$table_exists) {
+        // Create 'Apreservations' table
+        $conn->exec("CREATE TABLE villareservations (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            villa_id INT NOT NULL,
+            phone_number VARCHAR(15) NOT NULL,
+            start_date DATE NOT NULL,
+            end_date DATE NOT NULL,
+            status ENUM('pending', 'confirmed', 'cancelled'),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )");
+
+        echo "Table 'Apreservations' created successfully.<br>";
+    }
+    // --------------------------------------------
+// --------------------------------------------
+    // Ensure 'riads' table exists
+    $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'riads'")->fetchColumn();
+    if (!$table_exists) {
+        $conn->exec("CREATE TABLE riads (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            riad_name VARCHAR(255) NOT NULL,
+            location VARCHAR(255) NOT NULL,
+            price DECIMAL(10,2) NOT NULL,
+            description TEXT NOT NULL,
+            cover_image VARCHAR(255),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )");
+        echo "Table 'riads' created successfully.<br>";
+    }
+
+    // Ensure 'riad_images' table exists
+    $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'riad_images'")->fetchColumn();
+    if (!$table_exists) {
+        $conn->exec("CREATE TABLE riad_images (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            riad_id INT NOT NULL,
+            image_path VARCHAR(255) NOT NULL,
+            FOREIGN KEY (riad_id) REFERENCES riads(id) ON DELETE CASCADE
+        )");
+        echo "Table 'riad_images' created successfully.<br>";
+    }
+    // --------------------------------------------
+    // Check if the 'riadreservations' table exists
+    $table_exists = $conn->query("SELECT COUNT(*) FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '$db_name' AND TABLE_NAME = 'riadreservations'")->fetchColumn();
+
+    if (!$table_exists) {
+        // Create 'riadreservations' table
+        $conn->exec("CREATE TABLE riadreservations (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            riad_id INT NOT NULL,
+            phone_number VARCHAR(15) NOT NULL,
+            start_date DATE NOT NULL,
+            end_date DATE NOT NULL,
+            status ENUM('pending', 'confirmed', 'cancelled'),
+            created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+            updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        )");
+
+        echo "Table 'riadreservations' created successfully.<br>";
+    }
+    ensureColumnExists($conn, $db_name, 'riadreservations', 'name', 'VARCHAR(55)');
+    // --------------------------------------------
 } catch (PDOException $e) {
     die("Database connection failed: " . $e->getMessage());
 }

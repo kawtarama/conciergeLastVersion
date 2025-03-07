@@ -39,8 +39,16 @@ switch ($method) {
             include 'api/reservation/create.php';
         } else if($action === 'create_apartment'){
             include 'api/apartment/create.php';
+        } else if ($action === 'create_villa'){
+            include 'api/villa/create.php';
         } else if($action === 'create_apartment_reservation'){
             include 'api/apartment_reservation/create_reservation.php';
+        } else if($action === 'create_villa_reservation'){
+            include 'api/villa_reservation/create_reservation.php';
+        } else if ($action === 'create_riad'){
+            include 'api/riad/create.php';
+        } else if ($action === 'create_riad_reservation'){
+            include 'api/riad_reservation/create_reservation.php';
         } else {
             echo json_encode(['message' => 'Invalid action']);
         }
@@ -61,13 +69,20 @@ switch ($method) {
             include 'api/reservation/read.php';
         } else if($action === 'read_apartment'){
             include 'api/apartment/read.php';
+        } else if ($action === 'read_villas'){
+            include 'api/villa/read.php';
         } else if($action === 'statistics'){
             include 'api/statistics/stats.php';
         } else if($action === 'getTitle_service'){
             include 'api/services/getTitle.php';
         } else if ($action === 'read_apartment_reservations'){
         include 'api/apartment_reservation/read_reservations.php';
-
+         } else if($action === 'read_villa_reservations'){
+        include 'api/villa_reservation/read_reservations.php';
+    } else if ($action === 'read_riads'){
+        include 'api/riad/read.php';
+    } else if ($action === 'read_riad_reservations'){
+        include 'api/riad_reservation/read_reservations.php';
         } else {
             echo json_encode(['message' => 'Invalid action']);
         }
@@ -84,9 +99,16 @@ switch ($method) {
             include 'api/reservation/update.php';
         } else if($action === 'update_apartment'){
             include 'api/apartment/update.php';
-        
+        } else if($action === 'update_villa'){
+            include 'api/villa/update.php';
+        } else if($action === 'update_villa_reservation'){
+            include 'api/villa_reservation/update_reservation.php';
         } else if($action === 'update_apartment_reservation') {
                 include 'api/apartment_reservation/update_reservation.php';
+            } else if ($action === 'update_riad'){
+                include 'api/riad/update.php';
+            } else if ($action === 'update_riad_reservation'){
+                include 'api/riad_reservation/update_reservation.php';
         } else {
             echo json_encode(['message' => 'Invalid action']);
         }
@@ -102,6 +124,11 @@ switch ($method) {
             include 'api/events/delete.php';
         } else if($action === 'delete_apartment'){
             include 'api/apartment/delete.php';
+        } else if($action === 'delete_villa'){
+            include 'api/villa/delete.php';
+        } else if ($action === 'delete_riad'){
+            include 'api/riad/delete.php';
+        
         } else {
             echo json_encode(['message' => 'Invalid action']);
         }
